@@ -1,0 +1,12 @@
+{
+  "name": "message-board",
+  "private": false,
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "start": "lerna run start --stream",
+    "build": "lerna run build --stream"
+  }
+}
