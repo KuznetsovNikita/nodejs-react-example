@@ -1,0 +1,75 @@
+tags:
+  - name: Channels and messages
+    description: Channels API
+
+paths:
+  # [GET] channels
+  /channels:
+    get:
+      tags:
+        - channels
+      summary: Get All Channels
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+  # [GET] messages/channelId
+  /messages/{channelId}:
+    get:
+      tags:
+        - messages
+      summary: Find messages by ChannelId
+      parameters:
+        - name: channelId
+          in: path
+          description: Channel Id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+  # [POST] channelId
+  /{channelId}:
+    post:
+      tags:
+        - message
+      summary: Create message for channel
+      parameters:
+        - name: channelId
+          in: path
+          description: channel Id
+          required: true
+          type: integer
+        - name: body
+          in: body
+          description: Message payload
+          required: true
+          schema:
+            $ref: '#/definitions/message'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        500:
+          description: 'Server Error'
+
+# definitions
+definitions:
+  message:
+    type: object
+    required:
+      - text
+    properties:
+      text:
+        type: string
+        description: message text
+
+schemes:
+  - https
+  - http
