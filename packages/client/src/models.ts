@@ -5,6 +5,6 @@ export interface Channel {
 
 export interface Message {
   channelId: number;
-  messageId: number;
+  messageId?: number;
   text: string;
 }

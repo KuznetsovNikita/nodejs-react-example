@@ -22,6 +22,11 @@
     "baseUrl": "src",
     "paths": {}
   },
-  "include": ["src/**/*.ts", "src/**/*.json", ".env"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.json",
+    ".env",
+    "../client/src/models.ts"
+  ],
   "exclude": ["node_modules"]
 }

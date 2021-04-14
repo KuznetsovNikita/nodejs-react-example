@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
@@ -10,10 +11,12 @@ class App {
   public env: string = process.env.NODE_ENV || "development";
 
   constructor(route: Route) {
+    this.app.use(cors());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 
     this.app.use("/", route.router);
+
     this.initializeSwagger();
     this.app.use(errorMiddleware);
   }
