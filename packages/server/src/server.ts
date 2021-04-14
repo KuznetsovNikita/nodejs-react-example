@@ -1,6 +1,3 @@
-import App from './app';
-import Route from './route';
+import App from "./app";
 
-const app = new App(new Route());
-
-app.listen();
+new App();

@@ -10,18 +10,17 @@ class App {
   public port: string | number = process.env.PORT || 3002;
   public env: string = process.env.NODE_ENV || "development";
 
-  constructor(route: Route) {
+  constructor() {
     this.app.use(cors());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 
+    const route = new Route();
     this.app.use("/", route.router);
 
     this.initializeSwagger();
     this.app.use(errorMiddleware);
-  }
 
-  public listen(): void {
     this.app.listen(this.port, () => {
       console.info(`ENV: ${this.env}`);
       console.info(`App listening on the port ${this.port}`);

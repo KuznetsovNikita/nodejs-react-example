@@ -1,42 +1,52 @@
 import classNames from "classnames";
 import React from "react";
 import { Channel } from "../models";
+import { StateContext } from "../state";
 import "./channels.less";
+
+export const Channels = () => {
+  const { channels, selectChannel, selectedChannelId } = React.useContext(
+    StateContext
+  );
+
+  return (
+    <div className="channels">
+      <h3>Channels</h3>
+      <ChannelsList
+        channels={channels}
+        selectChannel={selectChannel}
+        selectedChannelId={selectedChannelId}
+      />
+    </div>
+  );
+};
 
 interface ChannelsProps {
   channels: Channel[];
   selectedChannelId: number | undefined;
-  selectChannel: (id: number | undefined) => void;
+  selectChannel: (id: number) => void;
 }
 
-export const Channels: React.FC<ChannelsProps> = React.memo((props) => {
-  return (
-    <div className="channels">
-      <h3>Channels</h3>
-      <ChannelsList {...props} />
-    </div>
-  );
-});
+const ChannelsList: React.FC<ChannelsProps> = React.memo(
+  ({ channels, selectChannel, selectedChannelId }) => {
+    if (channels.length === 0) return <span>Loading...</span>;
 
-const ChannelsList: React.FC<ChannelsProps> = React.memo((props) => {
-  const { channels, selectChannel, selectedChannelId } = props;
-  if (channels.length === 0) return <span>Loading...</span>;
-
-  return (
-    <>
-      {channels.map((channel) => {
-        return (
-          <div
-            className={classNames("channel", {
-              "as-active": channel.channelId === selectedChannelId,
-            })}
-            key={channel.channelId}
-            onClick={() => selectChannel(channel.channelId)}
-          >
-            {channel.name}
-          </div>
-        );
-      })}
-    </>
-  );
-});
+    return (
+      <>
+        {channels.map((channel) => {
+          return (
+            <div
+              className={classNames("channel", {
+                "as-active": channel.channelId === selectedChannelId,
+              })}
+              key={channel.channelId}
+              onClick={() => selectChannel(channel.channelId)}
+            >
+              {channel.name}
+            </div>
+          );
+        })}
+      </>
+    );
+  }
+);

@@ -5,10 +5,10 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
-    "dev": "cross-env NODE_ENV=development nodemon",
+    "start": "cross-env NODE_ENV=development nodemon",
     "build": "tsc && npx tsc-alias",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "start:prod": "npm run build && cross-env NODE_ENV=production node dist/server.js"
   },
   "dependencies": {
     "class-transformer": "^0.4.0",

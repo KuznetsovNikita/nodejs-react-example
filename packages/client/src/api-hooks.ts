@@ -1,7 +1,8 @@
 import React from "react";
 import { Channel, Message } from "./models";
 
-const baseUrl = "http://localhost:3002";
+const baseUrl =
+  process.env.NODE_ENV === "production" ? "/" : "http://localhost:3002";
 
 interface Response<P> {
   data: P;
@@ -40,13 +41,6 @@ export const useMessages = (channelId: number | undefined) => {
     React.Dispatch<React.SetStateAction<Message[]>>
   ];
 };
-
-export function generateFaceMessage(channelId: number, text: string): Message {
-  return {
-    channelId,
-    text,
-  };
-}
 
 export function requestCreateMessage(channelId: number, text: string) {
   return fetch(`${baseUrl}/${channelId}`, {

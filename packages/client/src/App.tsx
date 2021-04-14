@@ -1,16 +1,20 @@
 import React from "react";
-import {
-  generateFaceMessage,
-  requestCreateMessage,
-  useChannels,
-  useMessages,
-} from "./api-hooks";
+import { requestCreateMessage, useChannels, useMessages } from "./api-hooks";
 import "./app-style.less";
 import { Channels } from "./channels/Channels";
 import { Form } from "./form/Form";
 import { Messages } from "./messages/Messages";
+import { Message } from "./models";
+import { StateContext } from "./state";
 
-export const App: React.FC = () => {
+function generateFakeMessage(channelId: number, text: string): Message {
+  return {
+    channelId,
+    text,
+  };
+}
+
+const StateProvider: React.FC = ({ children }) => {
   const [selectedChannelId, selectChannel] = React.useState<number>();
 
   const channels = useChannels();
@@ -18,7 +22,9 @@ export const App: React.FC = () => {
 
   const submitMessage = React.useCallback(
     async (channelId: number, text: string) => {
-      setMessages((item) => item.concat(generateFaceMessage(channelId, text)));
+      setMessages((items) =>
+        items.concat(generateFakeMessage(channelId, text))
+      );
 
       const newMessages = await requestCreateMessage(channelId, text);
       if (newMessages) {
@@ -29,17 +35,28 @@ export const App: React.FC = () => {
   );
 
   return (
-    <div className="app">
-      <Channels
-        channels={channels}
-        selectedChannelId={selectedChannelId}
-        selectChannel={selectChannel}
-      />
-      <Messages messages={messages} />
-      <Form
-        selectedChannelId={selectedChannelId}
-        submitMessage={submitMessage}
-      />
-    </div>
+    <StateContext.Provider
+      value={{
+        channels,
+        messages,
+        selectedChannelId,
+        selectChannel,
+        submitMessage,
+      }}
+    >
+      {children}
+    </StateContext.Provider>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <StateProvider>
+      <div className="app">
+        <Channels />
+        <Messages />
+        <Form />
+      </div>
+    </StateProvider>
   );
 };
